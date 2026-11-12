@@ -1,13 +1,19 @@
 // Kassan
-//import { checkout } from './kassa-imperativ.js';
-import { products, lines, discountCodes, VAT_RATE } from './data.js'
+import { checkout } from "./kassa-imperativ.js";
+import { products, lines, discountCodes, VAT_RATE } from "./data.js";
 import { formatReceipt } from "./receipt.js";
-//import { createCart } from './cart.js' // TODO TILL TORSDAG
- 
+import { createCart } from "./cart.js"; // TODO TILL TORSDAG
+
 // 1. Kör den gamla kassan. Kör den sedan en gång till, med samma rabattkod.
 // TODO: Gissa först. Blir kvittot detsamma båda gångerna? Varför inte?
-//checkout('STUDENT');
-// checkout('STUDENT');
+checkout("STUDENT");
+checkout("STUDENT");
+checkout("STUDENT");
+
+console.log("==========");
+
+console.log(formatReceipt(lines, products, "STUDENT", discountCodes, VAT_RATE));
+console.log(formatReceipt(lines, products, "STUDENT", discountCodes, VAT_RATE));
 
 // --- Del A, på passet (15 min) ---
 // TODO: skriv rena funktioner i js/receipt.js och använd dem här i stället för checkout.
@@ -26,5 +32,19 @@ import { formatReceipt } from "./receipt.js";
 // --- Del B och C, självstudier till torsdagen ---
 // Se README. Ni tar med Kassan till workshoppen och granskar varandras kod.
 
-console.log(formatReceipt(lines, products, 'STUDENT', discountCodes, VAT_RATE));
+const cart = createCart(products);
+cart.add("latte", 2);
+cart.add("bulle");
+cart.add("latte");
+console.log(cart.lines()); // [{ productId:'latte', quantity:3 }, { productId:'bulle', quantity:1 }]
+console.log(cart.total()); // 182
 
+console.log(formatReceipt(lines, products, "STUDENT", discountCodes, VAT_RATE));
+
+document.querySelector("#receipt").textContent = formatReceipt(
+  lines,
+  products,
+  "STUDENT",
+  discountCodes,
+  VAT_RATE,
+);
